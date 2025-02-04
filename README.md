@@ -1,1 +1,3 @@
-# robotics-rc-bomb-detection-car
+# Robotics RC Bomb Detection Car
+
+### Add a ChatGPT about...
