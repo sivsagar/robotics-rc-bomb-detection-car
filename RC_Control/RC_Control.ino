@@ -11,6 +11,11 @@ BluetoothSerial SerialBT;
 #define IN4 32
 #define BUZZ 12
 
+const int trigPin = 9;
+const int echoPin = 10;
+const int ledPin = 7;
+const int buzzerPin = 8;
+
 int speed = 0;
 
 void setup() {
@@ -24,9 +29,24 @@ void setup() {
     pinMode(ENA, OUTPUT);
     pinMode(ENB, OUTPUT);
     pinMode(BUZZ, OUTPUT);
+
+    // Set the trigPin as an OUTPUT
+  pinMode(trigPin, OUTPUT);
+  
+  // Set the echoPin as an INPUT
+  pinMode(echoPin, INPUT);
+  
+  // Set the ledPin as an OUTPUT
+  pinMode(ledPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
 }
 
 void loop() {
+    if (getDistance() < 10) {
+      startHorn();
+    } else {
+      stopHorn();
+    }
     if (SerialBT.available()) {
         char command = SerialBT.read();
 
@@ -48,6 +68,33 @@ void loop() {
             setSpeed(command);
     }
     delay(50);
+}
+
+float getDistance() {
+  // Clear the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  
+  // Set the trigPin HIGH for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Read the echoPin, returns the sound wave travel time in microseconds
+  long duration = pulseIn(echoPin, HIGH);
+  
+  // Calculate the distance in cm
+  float distance = (duration * 0.0343) / 2;
+  
+  // Print the distance to the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  // Return the measured distance
+  return distance;
+  // Wait for a short period before the next measurement
+  // the delay is in the main loop function
 }
 
 void setSpeed(char command) {
