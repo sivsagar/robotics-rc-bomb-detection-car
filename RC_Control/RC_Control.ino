@@ -12,9 +12,6 @@ BluetoothSerial SerialBT;
 #define BUZZ 12
 #define VOUT 18
 
-const int trigPin = 4;
-const int echoPin = 5;
-
 int speed = 0;
 
 void setup() {
@@ -30,72 +27,30 @@ void setup() {
     pinMode(BUZZ, OUTPUT);
     pinMode(VOUT, OUTPUT);
     digitalWrite(VOUT, HIGH);
-
-    // Set the trigPin as an OUTPUT
-    pinMode(trigPin, OUTPUT);
-
-    // Set the echoPin as an INPUT
-    pinMode(echoPin, INPUT);
 }
 
 void loop() {
-    float distance = getDistance();
-    if (distance < 10 && distance != 0) {
-        startHorn();
-        moveBackward();
-        delay(1000);
-        stopHorn();
-        stopCar();
-    } else {
-        if (SerialBT.available()) {
-            char command = SerialBT.read();
+    if (SerialBT.available()) {
+        char command = SerialBT.read();
 
-            if (command == 'F')
-                moveForward();
-            else if (command == 'B')
-                moveBackward();
-            else if (command == 'L')
-                turnLeft();
-            else if (command == 'R')
-                turnRight();
-            else if (command == 'S')
-                stopCar();
-            else if (command == 'V')
-                startHorn();
-            else if (command == 'v')
-                stopHorn();
-            else
-                setSpeed(command);
-        }
+        if (command == 'F')
+            moveForward();
+        else if (command == 'B')
+            moveBackward();
+        else if (command == 'L')
+            turnLeft();
+        else if (command == 'R')
+            turnRight();
+        else if (command == 'S')
+            stopCar();
+        else if (command == 'V')
+            startHorn();
+        else if (command == 'v')
+            stopHorn();
+        else
+            setSpeed(command);
     }
     delay(50);
-}
-
-float getDistance() {
-    // Clear the trigPin
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
-
-    // Set the trigPin HIGH for 10 microseconds
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
-
-    // Read the echoPin, returns the sound wave travel time in microseconds
-    long duration = pulseIn(echoPin, HIGH);
-
-    // Calculate the distance in cm
-    float distance = (duration * 0.0343) / 2;
-
-    // Print the distance to the Serial Monitor
-    Serial.print("Distance: ");
-    Serial.print(distance);
-    Serial.println(" cm");
-
-    // Return the measured distance
-    return distance;
-    // Wait for a short period before the next measurement
-    // the delay is in the main loop function
 }
 
 void setSpeed(char command) {
