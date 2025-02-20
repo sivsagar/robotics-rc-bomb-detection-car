@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RC Car Control</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      function sendCommand(cmd) {
+        fetch("/" + cmd);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container control-container">
+      <h1>RC Car Controller 🚗</h1>
+      <div class="controls">
+        <button class="btn up" onclick="sendCommand('forward')">▲</button>
+        <div class="middle">
+          <button class="btn left" onclick="sendCommand('left')">◄</button>
+          <button class="btn stop" onclick="sendCommand('stop')">■</button>
+          <button class="btn right" onclick="sendCommand('right')">►</button>
+        </div>
+        <button class="btn down" onclick="sendCommand('backward')">▼</button>
+      </div>
+    </div>
+    <div class="bottom-row-info">
+      <div class="container gps-container">
+        <h2>GPS Coordinates</h2>
+        <table class="gps-table" border="1">
+          <tr>
+            <th>Property</th>
+            <th>Information</th>
+          </tr>
+          <tr>
+            <td>Latitude</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Longitude</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Speed (km/h)</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Altitude (m)</td>
+            <td>-</td>
+          </tr>
+        </table>
+      </div>
+      <div
+        class="container gps-container"
+        style="
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        "
+      >
+        <h2>Metal Detector</h2>
+        <table class="gps-table" border="1">
+          <tr>
+            <th>Property</th>
+            <th>Information</th>
+          </tr>
+          <tr>
+            <td>Sensor Value</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Detected?</td>
+            <td>Yes</td>
+          </tr>
+        </table>
+        <h2 style="color: rgb(30, 121, 186)">Metal Detected!</h2>
+      </div>
+    </div>
+  </body>
+</html>
