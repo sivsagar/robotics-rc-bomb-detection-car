@@ -55,15 +55,15 @@ h1 {
 }
 
 .up, .down {
-    background: #ff5722;
+    background: burlywood;
 }
 
 .left, .right {
-    background: #ff9800;
+    background: burlywood;
 }
 
 .stop {
-    background: #f44336;
+    background: mediumaquamarine;
     width: 70px;
     height: 70px;
 }
