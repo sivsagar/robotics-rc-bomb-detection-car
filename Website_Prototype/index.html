@@ -12,18 +12,37 @@
     </script>
   </head>
   <body>
-    <div class="container control-container">
-      <h1>RC Car Controller 🚗</h1>
-      <div class="controls">
-        <button class="btn up" onclick="sendCommand('forward')">▲</button>
-        <div class="middle">
-          <button class="btn left" onclick="sendCommand('left')">◄</button>
-          <button class="btn stop" onclick="sendCommand('stop')">■</button>
-          <button class="btn right" onclick="sendCommand('right')">►</button>
+    <div
+      style="display: flex; justify-content:space-around; align-items: center; margin-top:16px; width:100%"
+    >
+      <div
+        class="video-viewport"
+        style="
+          flex: 1;
+          display: flex;
+          flex:1;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <video id="videoStream" width="480" height="360" controls autoplay style="display: flex;"></video>
+          <source src="http://your-ip-address/video-feed" type="video/mp4" />
+        </video>
+      </div>
+      <div class="container control-container" style="flex:0;">
+        <h1>RC Car Controller 🚗</h1>
+        <div class="controls">
+          <button class="btn up" onclick="sendCommand('forward')">▲</button>
+          <div class="middle">
+            <button class="btn left" onclick="sendCommand('left')">◄</button>
+            <button class="btn stop" onclick="sendCommand('stop')">■</button>
+            <button class="btn right" onclick="sendCommand('right')">►</button>
+          </div>
+          <button class="btn down" onclick="sendCommand('backward')">▼</button>
         </div>
-        <button class="btn down" onclick="sendCommand('backward')">▼</button>
       </div>
     </div>
+
     <div class="bottom-row-info">
       <div class="container gps-container">
         <h2>GPS Coordinates</h2>
