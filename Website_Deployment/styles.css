@@ -180,6 +180,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+    /* Make it unselectable */
+    cursor: pointer;
+    /* Change cursor to pointer */
+}
+
+.control-button:hover {
+    background-color: #555;
+    /* Slightly lighter background on hover */
+    border-color: #4d4545;
+    /* Slightly lighter border on hover */
 }
 
 .rc-control-middle-container {

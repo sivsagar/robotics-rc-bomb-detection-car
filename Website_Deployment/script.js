@@ -9,3 +9,20 @@ socket.onmessage = function (event) {
 function sendCommand(command) {
     socket.send(command);
 }
+
+document.addEventListener('keydown', function (event) {
+    switch (event.key) {
+        case 'ArrowUp':
+            sendCommand('forward');
+            break;
+        case 'ArrowLeft':
+            sendCommand('left');
+            break;
+        case 'ArrowRight':
+            sendCommand('right');
+            break;
+        case 'ArrowDown':
+            sendCommand('backward');
+            break;
+    }
+});
