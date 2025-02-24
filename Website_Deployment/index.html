@@ -38,7 +38,7 @@
       </table>
     </div>
     <div class="viewport-container">
-      <img src="viewport_example.png" alt="Viewport Image" style="width: 100%; height: 100%; object-fit: cover;" />
+      <img id="videoStream" src="http://ESP32_CAM_IP:80/stream" alt="ESP32-CAM Video">
     </div>
     <div class="metal-detector-panel">
       <h2>Metal Detector</h2>
@@ -61,14 +61,16 @@
   </div>
   <div class="lower-row">
     <div class="rc-control">
-      <div class="control-button">↑</div>
+      <div class="control-button" onclick="sendCommand('forward')">↑</div>
       <div class="rc-control-middle-container">
-        <div class="control-button">←</div>
-        <div class="control-button" style="font-size: 40px; padding-bottom:5px; padding-left:2px; padding-right:2px">■
+        <div class="control-button" onclick="sendCommand('left')">←</div>
+        <div class="control-button" style="font-size: 40px; padding-bottom:5px; padding-left:2px; padding-right:2px"
+          onclick="sendCommand('stop')">
+          ■
         </div>
-        <div class="control-button">→</div>
+        <div class="control-button" onclick="sendCommand('right')">→</div>
       </div>
-      <div class="control-button">↓</div>
+      <div class="control-button" onclick="sendCommand('backward')">↓</div>
     </div>
   </div>
 </body>
