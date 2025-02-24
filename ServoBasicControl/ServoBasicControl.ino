@@ -1,24 +1,15 @@
 #include <ESP32Servo.h>
 
 Servo myServo;
-const int ledPin = 2;
 
 void setup() {
-  myServo.attach(13, 500, 2400); // Use GPIO 13 & adjust pulse range
-  pinMode(ledPin, OUTPUT);
-  delay(100);  // Stabilization delay
+  myServo.attach(13);  // Connect servo signal to GPIO 13
 }
 
 void loop() {
-  myServo.writeMicroseconds(1000); // Move to 0°
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
-
-  myServo.writeMicroseconds(1500); // Move to 90°
-  digitalWrite(ledPin, LOW);
-  delay(1000);
-
-  myServo.writeMicroseconds(2000); // Move to 180°
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
+  myServo.write(0);    // Move to 0°
+  delay(500);
+  
+  myServo.write(180);  // Move to 180°
+  delay(500);
 }
