@@ -17,6 +17,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     Serial.println("Turning Left");
   } else if (command == "right") {
     Serial.println("Turning Right");
+  } else if (command == "stop") {
+    Serial.println("Stop Movement");
   }
 }
 
@@ -37,5 +39,5 @@ void loop() {
   String sensorData = "Sensor: " + String(sensorValue);
 
   webSocket.broadcastTXT(sensorData);
-  delay(1000); 
+  delay(50); 
 }

@@ -1,4 +1,4 @@
-let socket = new WebSocket("ws://ESP32_IP:81");
+let socket = new WebSocket("ws://192.168.137.253:81");
 
 socket.onmessage = function (event) {
     if (event.data.startsWith("Sensor:")) {
@@ -23,6 +23,9 @@ document.addEventListener('keydown', function (event) {
             break;
         case 'ArrowDown':
             sendCommand('backward');
+            break;
+        case ' ':
+            sendCommand('stop');
             break;
     }
 });
