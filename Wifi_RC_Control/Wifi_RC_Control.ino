@@ -17,12 +17,6 @@ int speed = 127;
 #define IN3 33
 #define IN4 32
 
-#define PWM_CHANNEL_A 0  // PWM channel for ENA
-#define PWM_CHANNEL_B 1  // PWM channel for ENB
-#define PWM_STEERING 3 // PWM channel for Steering
-#define PWM_FREQ 1000    // PWM frequency in Hz
-#define PWM_RESOLUTION 8 // 8-bit resolution (0-255)
-
 // Metal Detector Input Pin
 #define METAL_DETECTOR_PIN 35
 
@@ -62,14 +56,10 @@ void setup() {
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
-  // Setup PWM channels
-  //ledcSetup(PWM_CHANNEL_A, PWM_FREQ, PWM_RESOLUTION);
-  //ledcSetup(PWM_CHANNEL_B, PWM_FREQ, PWM_RESOLUTION);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
   myServo.attach(STEERING);  // Connect servo signal to GPIO 13
-    
-  // Attach PWM to motor driver enable pins
-  //ledcAttachPin(ENA, PWM_CHANNEL_A);
-  //ledcAttachPin(ENB, PWM_CHANNEL_B);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.println("Connecting..."); }
@@ -102,8 +92,8 @@ void moveForward() {
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
-    ledcWrite(PWM_CHANNEL_A, speed);
-    ledcWrite(PWM_CHANNEL_B, speed);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void moveBackward() {
@@ -111,8 +101,8 @@ void moveBackward() {
     digitalWrite(IN2, HIGH);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
-    ledcWrite(PWM_CHANNEL_A, speed);
-    ledcWrite(PWM_CHANNEL_B, speed);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void stopCar() {
@@ -120,8 +110,8 @@ void stopCar() {
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, LOW);
-    ledcWrite(PWM_CHANNEL_A, 0);
-    ledcWrite(PWM_CHANNEL_B, 0);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void steerLeft() {

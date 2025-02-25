@@ -14,9 +14,11 @@ speedSlider.addEventListener("mouseout", () => {
 
 
 const video = document.querySelector("#espCamStream");
-video.src = "http://192.168.137.20/1600x1200.mjpeg";
+video.src = prompt("Enter ESP32CAM Video Link :");
 
-let socket = new WebSocket("ws://192.168.137.78:81");
+const esp32ip = prompt("Enter ESP32 RC Control IP:");
+const websocketvalue = `ws://${esp32ip}`;
+let socket = new WebSocket(websocketvalue);
 
 socket.onmessage = function (event) {
     if (event.data.startsWith("metal-detector-value:")) {
