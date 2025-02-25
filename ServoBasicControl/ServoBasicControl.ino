@@ -7,9 +7,14 @@ void setup() {
 }
 
 void loop() {
-  myServo.write(0);    // Move to 0°
-  delay(500);
-  
-  myServo.write(180);  // Move to 180°
-  delay(500);
+  for(int i=60;i<=120;i++) {
+    myServo.write(i);
+    delay(10);
+  }
+  delay(1000);
+  for(int i=120;i>=60;i--) {
+    myServo.write(i);
+    delay(10);
+  }
+  delay(1000);
 }
