@@ -1,8 +1,22 @@
-let socket = new WebSocket("ws://192.168.137.253:81");
+const speedSlider = document.querySelector("#speedSlider");
+const metalDetectorSensorValue = document.querySelector("#metal-detector-sensor-value")
+
+speedSlider.addEventListener("input", function () {
+    const sliderValue = speedSlider.value;
+    console.log("Speed Slider Value: " + sliderValue);
+    const sendSpeed = `${sliderValue}`;
+    sendCommand(sendSpeed);
+});
+
+speedSlider.addEventListener("mouseout", () => {
+    speedSlider.blur();
+});
+
+let socket = new WebSocket("ws://192.168.137.78:81");
 
 socket.onmessage = function (event) {
-    if (event.data.startsWith("Sensor:")) {
-        console.log("Sensor Data Stream : " + event.data);
+    if (event.data.startsWith("metal-detector-value:")) {
+        metalDetectorSensorValue.textContent = event.data.substring(22);
     }
 };
 

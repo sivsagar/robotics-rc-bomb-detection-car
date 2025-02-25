@@ -38,7 +38,7 @@
       </table>
     </div>
     <div class="viewport-container">
-      <img id="videoStream" src="http://ESP32_CAM_IP:80/stream" alt="ESP32-CAM Video">
+      <img id="videoStream" src="http://192.168.137.228" alt="ESP32-CAM Video">
     </div>
     <div class="metal-detector-panel">
       <h2>Metal Detector</h2>
@@ -49,7 +49,7 @@
         </tr>
         <tr>
           <td>Sensor Value</td>
-          <td>-</td>
+          <td id="metal-detector-sensor-value">-</td>
         </tr>
         <tr>
           <td>Detected?</td>
@@ -71,6 +71,10 @@
         <div class="control-button" onclick="sendCommand('right')">→</div>
       </div>
       <div class="control-button" onclick="sendCommand('backward')">↓</div>
+      <div class="slider-container">
+        <label for="speedSlider">Speed</label>
+        <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
+      </div>
     </div>
   </div>
 </body>
