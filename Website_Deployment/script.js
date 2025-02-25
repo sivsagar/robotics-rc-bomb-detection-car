@@ -12,6 +12,9 @@ speedSlider.addEventListener("mouseout", () => {
     speedSlider.blur();
 });
 
+
+const video = document.querySelector("#espCamStream");
+video.src = "http://192.168.137.20/1600x1200.mjpeg";
 let socket = new WebSocket("ws://192.168.137.78:81");
 
 socket.onmessage = function (event) {
