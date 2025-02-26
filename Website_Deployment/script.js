@@ -1,5 +1,7 @@
 const speedSlider = document.querySelector("#speedSlider");
-const metalDetectorSensorValue = document.querySelector("#metal-detector-sensor-value")
+const metalDetectorSensorValue = document.querySelector("#metal-detector-sensor-value");
+const metalDetectorAlertText = document.querySelector("#metal-detector-alert-text");
+const metalDetectorDetectedText = document.querySelector("#metal-detector-detected-text");
 
 speedSlider.addEventListener("input", function () {
     const sliderValue = speedSlider.value;
@@ -14,15 +16,27 @@ speedSlider.addEventListener("mouseout", () => {
 
 
 const video = document.querySelector("#espCamStream");
-video.src = prompt("Enter ESP32CAM Video Link :");
+video.src = `http://${prompt("Enter ESP32CAM Video Link :")}/1600x1200.mjpeg`;
+// http://192.168.137.17/1600x1200.mjpeg (Example Link)
 
 const esp32ip = prompt("Enter ESP32 RC Control IP:");
-const websocketvalue = `ws://${esp32ip}`;
+const websocketvalue = `ws://${esp32ip}:81`;
+// ws://192.168.29.1:81 (Example websocketvalue)
 let socket = new WebSocket(websocketvalue);
 
 socket.onmessage = function (event) {
     if (event.data.startsWith("metal-detector-value:")) {
-        metalDetectorSensorValue.textContent = event.data.substring(22);
+        let metalDetectorValue = Number.parseInt(event.data.substring(22));
+        metalDetectorSensorValue.textContent = metalDetectorValue.toString();
+        if (metalDetectorValue > 50) {
+            metalDetectorAlertText.textContent = "Metal Detected!";
+            metalDetectorAlertText.style.color = "#ff4c76";
+            metalDetectorDetectedText.textContent = "Yes";
+        } else {
+            metalDetectorAlertText.textContent = "No Metal Detected!";
+            metalDetectorAlertText.style.color = "#e3ad19";
+            metalDetectorDetectedText.textContent = "No";
+        }
     }
 };
 
