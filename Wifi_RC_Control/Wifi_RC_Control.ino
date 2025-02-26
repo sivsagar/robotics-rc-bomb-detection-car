@@ -2,6 +2,9 @@
 #include <WebSocketsServer.h>
 #include <ESP32Servo.h>
 #include <Arduino.h>
+#include <HardwareSerial.h>
+#include <TinyGPS++.h>
+#include <ArduinoJson.h>
 
 const char* ssid = "PRITAMPC-Hotspot";
 const char* password = "2x8690+G";
@@ -20,8 +23,14 @@ int speed = 127;
 // Metal Detector Input Pin
 #define METAL_DETECTOR_PIN 35
 
+// MQ-2 Gas Sensor
+#define MQ2_ANALOG_PIN 34  // Connect A0 of MQ2 to GPIO34
+
 WebSocketsServer webSocket(81);
 Servo myServo;
+
+TinyGPSPlus gps;
+HardwareSerial gpsSerial(1);  // Use UART1
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   String command = String((char*)payload);
@@ -67,14 +76,40 @@ void setup() {
   Serial.println("Connected! ESP32 IP: " + WiFi.localIP().toString());
   webSocket.begin();
   webSocket.onEvent(webSocketEvent);
+
+  gpsSerial.begin(9600, SERIAL_8N1, 16, 17);  // GPS RX=16, TX=17
+  Serial.println("Waiting for GPS signal...");
 }
 
 void loop() {
   webSocket.loop();
+  StaticJsonDocument<200> jsonDoc;
 
-  String metalDetectorData = "metal-detector-value: " + String(getMetalDetectorValue());
 
-  webSocket.broadcastTXT(metalDetectorData);
+  while (gpsSerial.available()) {
+      char c = gpsSerial.read();
+      gps.encode(c);
+
+      if (gps.location.isUpdated()) {
+          Serial.print("Latitude: ");
+          Serial.print(gps.location.lat(), 6);
+          jsonDoc["gpsLatitude"] = gps.location.lat();
+          Serial.print(", Longitude: ");
+          Serial.println(gps.location.lng(), 6);
+          jsonDoc["gpsLongitude"] = gps.location.lng();
+          jsonDoc["gpsSpeed"] = gps.speed.kmph();
+          jsonDoc["gpsAltitude"] = gps.altitude.meters();
+      }
+  }
+
+  jsonDoc["metalDetector"] = getMetalDetectorValue();
+
+  jsonDoc["gasSensor"] = getGasSensorValue();
+
+  String jsonString;
+  serializeJson(jsonDoc, jsonString);
+
+  webSocket.broadcastTXT(jsonString);
   delay(50); 
 }
 
@@ -86,6 +121,13 @@ int getMetalDetectorValue() {
   return mappedValue;  // Return mapped value
 }
 
+int getGasSensorValue() {
+  //int gasSensorValue = analogRead(MQ2_ANALOG_PIN);
+  //int mappedValue = map(gasSensorValue, 0, 4095, 0, 1000);
+
+  int mappedValue = random(100, 1000);
+  return mappedValue;
+}
 
 void moveForward() {
     digitalWrite(IN1, HIGH);
@@ -115,9 +157,9 @@ void stopCar() {
 }
 
 void steerLeft() {
-  myServo.write(60);
+  myServo.write(35);
 }
 
 void steerRight() {
-  myServo.write(120);
+  myServo.write(0);
 }
