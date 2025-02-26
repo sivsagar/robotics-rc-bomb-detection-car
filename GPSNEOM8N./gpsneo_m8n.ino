@@ -23,5 +23,6 @@ void loop() {
 
 /*Explanation
 ->Uses HardwareSerial(1) since ESP32 has multiple hardware UARTs.
-->Reads latitude, longitude, speed, and satellite count.
+->Reads latitude, longitude.
 ->Uses GPIO 16 (RX2) and GPIO 17 (TX2) for GPS communication.*/
+
