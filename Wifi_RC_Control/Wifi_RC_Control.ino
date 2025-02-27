@@ -14,8 +14,8 @@ int speed = 127;
 // Motor Driver Pins
 #define STEERING 13
 #define ENA 18
-#define IN1 27
-#define IN2 26
+#define IN1 26
+#define IN2 27
 #define ENB 19
 #define IN3 33
 #define IN4 32
