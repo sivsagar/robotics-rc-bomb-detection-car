@@ -1,3 +1,4 @@
+#include <Adafruit_NeoPixel.h>
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <ESP32Servo.h>
@@ -5,12 +6,12 @@
 #include <TinyGPS++.h>
 #include <WebSocketsServer.h>
 #include <WiFi.h>
-#include <Adafruit_NeoPixel.h>
 
 #define PIN 23
 #define NUM_LEDS 10
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip =
+    Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 const char* ssid = "PRITAMPC-Hotspot";
 const char* password = "2x8690+G";
@@ -18,7 +19,7 @@ const char* password = "2x8690+G";
 int speed = 127;
 
 // Motor Driver Pins
-#define STEERING 13
+#define STEERING 25
 #define ENA 18
 #define IN1 26
 #define IN2 27
@@ -62,11 +63,16 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t* payload,
     } else if (command == "stop") {
         Serial.println("Stop Movement");
         stopCar();
+    } else if (command.startsWith("speed-")) {
+        // Extract speed value from "speed-0" to "speed-100"
+        int speedValue = command.substring(6).toInt();
+        if (speedValue >= 0 && speedValue <= 100) {
+            speed = map(speedValue, 0, 100, 0, 255);
+            Serial.print("Speed set to: ");
+            Serial.println(speed);
+        }
     } else {
-        int speedSliderValue = command.toInt();
-        speed = map(speedSliderValue, 0, 100, 0, 255);
-        Serial.print("Speed : ");
-        Serial.println(speed);
+        steerFront();
     }
 }
 
@@ -104,54 +110,73 @@ void setup() {
 }
 
 void ledred() {
-  for(int i=0; i<NUM_LEDS; i++) {
-    strip.setPixelColor(i, strip.Color(255, 0, 0));
-  }
-  strip.show();
+    for (int i = 0; i < NUM_LEDS; i++) {
+        strip.setPixelColor(i, strip.Color(255, 0, 0));
+    }
+    strip.show();
 }
 
 void ledgreen() {
-  for(int i=0; i<NUM_LEDS; i++) {
-    strip.setPixelColor(i, strip.Color(0, 255, 0));
-  }
-  strip.show();
+    for (int i = 0; i < NUM_LEDS; i++) {
+        strip.setPixelColor(i, strip.Color(0, 255, 0));
+    }
+    strip.show();
 }
 
 void ledblue() {
-  for(int i=0; i<NUM_LEDS; i++) {
-    strip.setPixelColor(i, strip.Color(0, 0, 255));
-  }
-  strip.show();
+    for (int i = 0; i < NUM_LEDS; i++) {
+        strip.setPixelColor(i, strip.Color(0, 0, 255));
+    }
+    strip.show();
 }
 
 void loop() {
     webSocket.loop();
     StaticJsonDocument<200> jsonDoc;
+    bool gpsDataAvailable = false;
 
     while (gpsSerial.available()) {
         char c = gpsSerial.read();
         gps.encode(c);
+
         if (gps.location.isUpdated()) {
-            ledgreen();
+            float latitude = gps.location.lat();
+            float longitude = gps.location.lng();
+            float speed = gps.speed.kmph();
+            float altitude = gps.altitude.meters();
+
             Serial.print("Latitude: ");
-            Serial.print(gps.location.lat(), 6);
-            jsonDoc["gpsLatitude"] = gps.location.lat();
+            Serial.print(latitude, 6);
             Serial.print(", Longitude: ");
-            Serial.println(gps.location.lng(), 6);
-            jsonDoc["gpsLongitude"] = gps.location.lng();
-            jsonDoc["gpsSpeed"] = gps.speed.kmph();
-            jsonDoc["gpsAltitude"] = gps.altitude.meters();
+            Serial.print(longitude, 6);
+            Serial.print(", Speed: ");
+            Serial.print(speed);
+            Serial.print(" km/h, Altitude: ");
+            Serial.print(altitude);
+            Serial.println(" meters");
+
+            jsonDoc["gpsLatitude"] = latitude;
+            jsonDoc["gpsLongitude"] = longitude;
+            jsonDoc["gpsSpeed"] = speed;
+            jsonDoc["gpsAltitude"] = altitude;
+
+            if (gps.location.isValid()) {
+                gpsDataAvailable = true;
+            }
         }
     }
 
     jsonDoc["metalDetector"] = getMetalDetectorValue();
-
     jsonDoc["gasSensor"] = getGasSensorValue();
+
+    if (gpsDataAvailable) {
+        ledgreen();  // Call only if valid GPS data is available
+    }
 
     String jsonString;
     serializeJson(jsonDoc, jsonString);
-
     webSocket.broadcastTXT(jsonString);
+
     delay(50);
 }
 
@@ -167,40 +192,39 @@ int getGasSensorValue() {
     int gasSensorValue = analogRead(MQ2_ANALOG_PIN);
     int mappedValue = map(gasSensorValue, 0, 4095, 0, 1000);
 
-    //int mappedValue = random(100, 1000);
+    // int mappedValue = random(100, 1000);
     return mappedValue;
 }
 
 void moveForward() {
-    myServo.write(MIDDLE_ANGLE);
     digitalWrite(IN1, HIGH);
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
-    // analogWrite(ENA, speed);
-    // analogWrite(ENB, speed);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void moveBackward() {
-    myServo.write(MIDDLE_ANGLE);
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, HIGH);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, HIGH);
-    // analogWrite(ENA, speed);
-    // analogWrite(ENB, speed);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void stopCar() {
-    myServo.write(MIDDLE_ANGLE);
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, LOW);
-    // analogWrite(ENA, speed);
-    // analogWrite(ENB, speed);
+    analogWrite(ENA, speed);
+    analogWrite(ENB, speed);
 }
 
 void steerLeft() { myServo.write(LEFT_ANGLE); }
 
 void steerRight() { myServo.write(RIGHT_ANGLE); }
+
+void steerFront() { myServo.write(MIDDLE_ANGLE); }

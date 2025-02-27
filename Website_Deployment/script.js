@@ -13,7 +13,7 @@ const gasSensorAlertText = document.querySelector("#gas-sensor-alert-text");
 speedSlider.addEventListener("input", function () {
     const sliderValue = speedSlider.value;
     console.log("Speed Slider Value: " + sliderValue);
-    const sendSpeed = `${sliderValue}`;
+    const sendSpeed = `speed-${sliderValue}`;
     sendCommand(sendSpeed);
 });
 
@@ -51,8 +51,8 @@ socket.onmessage = function (event) {
         metalDetectorDetectedText.textContent = "No";
     }
 
-    gpsLatitudeValueText.textContent = gpsLatitudeValueText.textContent;
-    gpsLongitudeValueText.textContent = gpsLongitudeValueText.textContent;
+    gpsLatitudeValueText.textContent = gpsLatitudeValue || gpsLatitudeValueText.textContent;
+    gpsLongitudeValueText.textContent = gpsLongitudeValue || gpsLongitudeValueText.textContent;
     gpsSpeedValueText.textContent = gpsSpeedValue || gpsSpeedValueText.textContent;
     gpsAltitudeValueText.textContent = gpsAltitudeValue || gpsAltitudeValueText.textContent;
 
