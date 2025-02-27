@@ -8,10 +8,10 @@ void setup() {
 }
 
 void loop() {
-  myServo.write(0);
-  Serial.println(0);
+  myServo.write(60);
+  Serial.println(60);
   delay(1000);
-  myServo.write(35);
-  Serial.println(35);
+  myServo.write(140);
+  Serial.println(140);
   delay(1000);
 }
