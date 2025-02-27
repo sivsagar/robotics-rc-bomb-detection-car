@@ -51,8 +51,8 @@ socket.onmessage = function (event) {
         metalDetectorDetectedText.textContent = "No";
     }
 
-    gpsLatitudeValueText.textContent = gpsLatitudeValue || gpsLatitudeValueText.textContent;
-    gpsLongitudeValueText.textContent = gpsLongitudeValue || gpsLongitudeValueText.textContent;
+    gpsLatitudeValueText.textContent = gpsLatitudeValueText.textContent;
+    gpsLongitudeValueText.textContent = gpsLongitudeValueText.textContent;
     gpsSpeedValueText.textContent = gpsSpeedValue || gpsSpeedValueText.textContent;
     gpsAltitudeValueText.textContent = gpsAltitudeValue || gpsAltitudeValueText.textContent;
 
