@@ -121,10 +121,10 @@ void loop() {
 }
 
 int getMetalDetectorValue() {
-  //int analogValue = analogRead(METAL_DETECTOR_PIN);  // Read raw analog Input
-  //int mappedValue = map(analogValue, 0, 4095, 0, 100);  // Map to 0-100 range
+  int analogValue = analogRead(METAL_DETECTOR_PIN);  // Read raw analog Input
+  int mappedValue = map(analogValue, 0, 4095, 0, 1000);  // Map to 0-100 range
 
-  int mappedValue = random(10, 100);
+  //int mappedValue = random(10, 100);
   return mappedValue;  // Return mapped value
 }
 

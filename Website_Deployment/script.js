@@ -41,7 +41,7 @@ socket.onmessage = function (event) {
     let gasSensorValue = data.gasSensor;
 
     metalDetectorSensorValue.textContent = metalDetectorValue.toString();
-    if (metalDetectorValue > 50) {
+    if (metalDetectorValue > 500) {
         metalDetectorAlertText.textContent = "Metal Detected!";
         metalDetectorAlertText.style.color = "#ff4c76";
         metalDetectorDetectedText.textContent = "Yes";
