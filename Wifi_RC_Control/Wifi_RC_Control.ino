@@ -22,6 +22,7 @@ int speed = 127;
 
 // Steering Angle
 #define LEFT_ANGLE 60
+#define MIDDLE_ANGLE 90
 #define RIGHT_ANGLE 140
 
 // Metal Detector Input Pin
@@ -142,6 +143,7 @@ void moveForward() {
     digitalWrite(IN4, LOW);
     analogWrite(ENA, speed);
     analogWrite(ENB, speed);
+    myServo.write(MIDDLE_ANGLE);
 }
 
 void moveBackward() {
@@ -151,6 +153,7 @@ void moveBackward() {
     digitalWrite(IN4, HIGH);
     analogWrite(ENA, speed);
     analogWrite(ENB, speed);
+    myServo.write(MIDDLE_ANGLE);
 }
 
 void stopCar() {
@@ -160,16 +163,13 @@ void stopCar() {
     digitalWrite(IN4, LOW);
     analogWrite(ENA, speed);
     analogWrite(ENB, speed);
+    myServo.write(MIDDLE_ANGLE);
 }
 
 void steerLeft() {
   myServo.write(LEFT_ANGLE);
-  Serial.print("Left Angle : ");
-  Serial.println(LEFT_ANGLE);
 }
 
 void steerRight() {
   myServo.write(RIGHT_ANGLE);
-  Serial.print("Right Angle : ");
-  Serial.println(RIGHT_ANGLE);
 }
