@@ -20,6 +20,10 @@ int speed = 127;
 #define IN3 33
 #define IN4 32
 
+// Steering Angle
+#define LEFT_ANGLE 60
+#define RIGHT_ANGLE 140
+
 // Metal Detector Input Pin
 #define METAL_DETECTOR_PIN 35
 
@@ -43,8 +47,10 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     moveBackward();
   } else if (command == "left") {
     Serial.println("Turning Left");
+    steerLeft();
   } else if (command == "right") {
     Serial.println("Turning Right");
+    steerRight();
   } else if (command == "stop") {
     Serial.println("Stop Movement");
     stopCar();
@@ -157,9 +163,13 @@ void stopCar() {
 }
 
 void steerLeft() {
-  myServo.write(35);
+  myServo.write(LEFT_ANGLE);
+  Serial.print("Left Angle : ");
+  Serial.println(LEFT_ANGLE);
 }
 
 void steerRight() {
-  myServo.write(0);
+  myServo.write(RIGHT_ANGLE);
+  Serial.print("Right Angle : ");
+  Serial.println(RIGHT_ANGLE);
 }
