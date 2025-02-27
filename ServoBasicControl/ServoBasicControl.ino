@@ -14,12 +14,15 @@ void setup() {
 
 void loop() {
   myServo.write(LEFT_ANGLE);
+  Serial.print("Left Angle : ");
   Serial.println(LEFT_ANGLE);
   delay(1000);
   myServo.write(MIDDLE_ANGLE);
+  Serial.print("Middle Angle : ");
   Serial.println(MIDDLE_ANGLE);
   delay(1000);
   myServo.write(RIGHT_ANGLE);
+  Serial.print("Right Angle : ");
   Serial.println(RIGHT_ANGLE);
   delay(1000);
 }
