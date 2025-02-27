@@ -1,32 +1,39 @@
-#include <Servo.h>
+/*
+  Blink
 
-#define MQ2pin A0  // Analog pin for MQ2 sensor
-#define THRESHOLD 300 // Define a threshold value for gas detection
+  Turns an LED on for one second, then off for one second, repeatedly.
 
-Servo myServo; // Create a Servo object
-float sensorValue; // Variable to store sensor value
+  Most Arduinos have an on-board LED you can control. On the UNO, MEGA and ZERO
+  it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
+  the correct LED pin independent of which board is used.
+  If you want to know what pin the on-board LED is connected to on your Arduino
+  model, check the Technical Specs of your board at:
+  https://www.arduino.cc/en/Main/Products
 
+  modified 8 May 2014
+  by Scott Fitzgerald
+  modified 2 Sep 2016
+  by Arturo Guadalupi
+  modified 8 Sep 2016
+  by Colby Newman
+
+  This example code is in the public domain.
+
+  https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink
+*/
+
+#define LED_BUILTIN 2
+
+// the setup function runs once when you press reset or power the board
 void setup() {
-    Serial.begin(9600); // Set serial port to 9600
-    Serial.println("MQ2 warming up!");
-    delay(20000); // Allow the MQ2 to warm up
-
-    myServo.attach(9); // Attach the servo to pin 9
-    myServo.write(0); // Set initial position to 0 degrees
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
+// the loop function runs over and over again forever
 void loop() {
-    sensorValue = analogRead(MQ2pin); // Read analog input from MQ2 sensor
-
-    Serial.print("Sensor Value: ");
-    Serial.println(sensorValue);
-    
-    if (sensorValue > THRESHOLD) {
-        Serial.println("Gas detected! Rotating servo.");
-        myServo.write(90); // Rotate servo to 90 degrees
-        delay(1000); // Hold position for 1 second
-        myServo.write(0); // Return to 0 degrees
-    }
-
-    delay(2000); // Wait 2s for the next reading
+  digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
+  delay(1000);                      // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
+  delay(1000);                      // wait for a second
 }
