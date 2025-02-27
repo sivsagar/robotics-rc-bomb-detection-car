@@ -5,7 +5,7 @@ Servo myServo;
 // Steering Angle
 #define LEFT_ANGLE 60
 #define MIDDLE_ANGLE 90
-#define RIGHT_ANGLE 140
+#define RIGHT_ANGLE 120
 
 void setup() {
   Serial.begin(115200);

@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 // Metal Detector Input Pin
-#define METAL_DETECTOR_PIN 35
+#define METAL_DETECTOR_PIN 36
 
 void setup() {
   // put your setup code here, to run once:
