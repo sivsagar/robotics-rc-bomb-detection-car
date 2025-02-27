@@ -76,9 +76,7 @@ void setup() {
     pinMode(ENA, OUTPUT);
     pinMode(ENB, OUTPUT);
 
-    myServo.setPeriodHertz(50);  // Standard servo frequency
-    myServo.attach(STEERING, 1000, 2000, 500, 2400,
-                   2);  // Last argument is PWM channel (2)
+    myServo.attach(STEERING);
 
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -130,16 +128,14 @@ int getMetalDetectorValue() {
     int mappedValue = map(analogValue, 0, 4095, 0, 1000);  // Map to 0-100 range
 
     // int mappedValue = random(10, 100);
-    Serial.print("Metal Detector Value : ");
-    Serial.println(mappedValue);
     return mappedValue;  // Return mapped value
 }
 
 int getGasSensorValue() {
-    // int gasSensorValue = analogRead(MQ2_ANALOG_PIN);
-    // int mappedValue = map(gasSensorValue, 0, 4095, 0, 1000);
+    int gasSensorValue = analogRead(MQ2_ANALOG_PIN);
+    int mappedValue = map(gasSensorValue, 0, 4095, 0, 1000);
 
-    int mappedValue = random(100, 1000);
+    //int mappedValue = random(100, 1000);
     return mappedValue;
 }
 
