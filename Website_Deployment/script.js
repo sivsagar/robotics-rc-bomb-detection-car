@@ -23,10 +23,10 @@ speedSlider.addEventListener("mouseout", () => {
 
 
 const video = document.querySelector("#espCamStream");
-video.src = `http://${prompt("Enter ESP32CAM Video Link :")}/1600x1200.mjpeg`;
+video.src = `http://${prompt("Enter ESP32 CAM IP :")}/1600x1200.mjpeg`;
 // http://192.168.137.17/1600x1200.mjpeg (Example Link)
 
-const esp32ip = prompt("Enter ESP32 RC Control IP:");
+const esp32ip = prompt("Enter ESP32 RC Control IP :");
 const websocketvalue = `ws://${esp32ip}:81`;
 // ws://192.168.29.1:81 (Example websocketvalue)
 let socket = new WebSocket(websocketvalue);
