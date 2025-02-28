@@ -40,6 +40,12 @@ socket.onmessage = function (event) {
     let gpsAltitudeValue = data.gpsAltitude;
     let gasSensorValue = data.gasSensor;
 
+    console.log("GPS Latitude Value: " + gpsLatitudeValue);
+    console.log("GPS Longitude Value: " + gpsLongitudeValue);
+    console.log("GPS Speed Value: " + gpsSpeedValue);
+    console.log("GPS Altitude Value: " + gpsAltitudeValue);
+    console.log("Gas Sensor Value: " + gasSensorValue);
+
     metalDetectorSensorValue.textContent = metalDetectorValue.toString();
     if (metalDetectorValue > 400) {
         metalDetectorAlertText.textContent = "Metal Detected!";

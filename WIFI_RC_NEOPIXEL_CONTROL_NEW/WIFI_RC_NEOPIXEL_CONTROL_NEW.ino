@@ -19,11 +19,11 @@ const char* password = "2x8690+G";
 int speed = 127;
 
 // Motor Driver Pins
-#define STEERING 25
-#define ENA 18
+#define STEERING 4
+#define ENA 12
 #define IN1 26
 #define IN2 27
-#define ENB 19
+#define ENB 14
 #define IN3 33
 #define IN4 32
 

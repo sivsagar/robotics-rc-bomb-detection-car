@@ -9,7 +9,7 @@ Servo myServo;
 
 void setup() {
   Serial.begin(115200);
-  myServo.attach(13);  // Connect servo signal to GPIO 13
+  myServo.attach(25);  // Connect servo signal to GPIO 25
 }
 
 void loop() {
